@@ -3,7 +3,7 @@ const c = canvas.getContext('2d');
 const width = 300;
 const height = 510;
 const boxSize = width/10;
-arrowImage = new Image();
+arrowImage = new Image(100, 100);
 arrowImage.src = './arrow.png';
 
 class Boat{
@@ -155,6 +155,5 @@ document.addEventListener("keydown", function(event) {
 
 const boats = [new Boat(2, 3, 5, "h"), new Boat(3, 6, 5, "v")];
 renderBackground();
+c.drawImage(arrowImage, 350, height/2, 100, 100);
 setInterval(updateProjectiles, 100);
-// Draw the arrow using the image
-c.drawImage(arrowImage, 0, 0, 100, 100, 0, 0, 100, 100);
