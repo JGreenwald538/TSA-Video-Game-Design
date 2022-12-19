@@ -164,9 +164,10 @@ setInterval(updateProjectiles, 100);
 arrowImage.onload = function() {
     degrees = 45;
     c.save();
-    c.translate(200/2, 200/2);
+    c.translate(200, 200);
     c.rotate(dToR(degrees));
-    c.drawImage(arrowImage, width/2, height/2, 100, 100);
-    c.translate(-200/2, -200/2);
+    c.translate(-150, -200);
+    c.drawImage(arrowImage, 200, 200, 100, 100);
+    
     c.restore();
 }
