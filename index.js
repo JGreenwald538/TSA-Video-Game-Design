@@ -5,9 +5,7 @@ const height = 510;
 const boxSize = width/10;
 var arrowImage = new Image();
 arrowImage.src = "arrow.png";
-arrowImage.onload = function() {
-    c.drawImage(arrowImage, 300, 100, 100, 100);
-}
+
 
 class Boat{
     constructor(size, boxX, boxY, direction){
@@ -160,3 +158,11 @@ const boats = [new Boat(2, 3, 5, "h"), new Boat(3, 6, 5, "v")];
 renderBackground();
 
 setInterval(updateProjectiles, 100);
+arrowImage.onload = function() {
+    c.save();
+    c.translate(20, 20);
+    c.drawImage(arrowImage, 400, 100, 100, 100);
+    c.translate(-20, -20);
+    c.rotate(dToR(45));
+    c.restore();
+}
