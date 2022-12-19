@@ -1,8 +1,10 @@
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
-const width = 300;
-const height = 510;
-const boxSize = width/10;
+const canvasWidth = 300;
+const canvasHeight = 510;
+const width = c.width;
+const height = c.height;
+const boxSize = canvasWidth/10;
 var arrowImage = new Image();
 arrowImage.src = "arrow.png";
 
@@ -41,16 +43,16 @@ function dToR(degrees)
 
 function renderBackground(){
     c.fillStyle = "blue";
-    c.fillRect(0, 0, width, height);
+    c.fillRect(0, 0, canvasWidth, canvasHeight);
     c.strokeStyle = "black";
-    for(let x = 0; x < width/boxSize; x++){
-        for(let y = 0; y < height/boxSize; y++){
+    for(let x = 0; x < canvasWidth/boxSize; x++){
+        for(let y = 0; y < canvasHeight/boxSize; y++){
             c.strokeRect(boxSize*x, boxSize*y, boxSize, boxSize);
         }
     }
     c.fillStyle = "gray";
-    c.fillRect(width/2-boxSize, height-boxSize, boxSize*2, boxSize);
-    c.fillRect(width/2-boxSize, 0, boxSize*2, boxSize);
+    c.fillRect(canvasWidth/2-boxSize, canvasHeight-boxSize, boxSize*2, boxSize);
+    c.fillRect(canvasWidth/2-boxSize, 0, boxSize*2, boxSize);
     for(let i = 0; i < boats.length; i++){
         boats[i].draw();
     }
@@ -58,9 +60,9 @@ function renderBackground(){
 
 class Projectile{
     constructor(){
-        this.x = width/2
+        this.x = canvasWidth/2
         this.y = 0
-        this.ogx = width/2
+        this.ogx = canvasWidth/2
         this.ogy = 0
         this.visible = true;
         c.fillStyle = "red";
@@ -69,9 +71,9 @@ class Projectile{
         this.power = 40;
         this.windSpeed = (Math.random()*2)
         this.windDirection = (Math.random()*360);
-        c.clearRect(width+1, 0, width*2, height);
+        c.clearRect(canvasWidth+1, 0, canvasWidth*2, canvasHeight);
         this.writeWindSpeed();
-        draw_arrow(c, 360, height/2, 60, this.windDirection);
+        draw_arrow(c, 360, canvasHeight/2, 60, this.windDirection);
     }
     update(degrees, v=5){
         if(this.visible){
@@ -89,7 +91,7 @@ class Projectile{
             this.displacement = ((this.x-this.ogx)**2 + (this.y-this.ogy)**2)**(1/2);
             if(this.displacement > this.power*3+200) {
                 this.remove();
-            } else if(-5 >= this.x || this.x >= width-5 || -5 > this.y || this.y > height-5){
+            } else if(-5 >= this.x || this.x >= canvasWidth-5 || -5 > this.y || this.y > canvasHeight-5){
                 this.remove();
             } else {
                 renderBackground();
@@ -104,7 +106,7 @@ class Projectile{
     }
     writeWindSpeed(){
         c.font = "48px serif";
-        c.fillText(Math.floor(this.windDirection) + " degrees", 300, height/2-100);
+        c.fillText(Math.floor(this.windDirection) + " degrees", 300, canvasHeight/2-100);
     }
 }
 
@@ -159,10 +161,7 @@ renderBackground();
 
 setInterval(updateProjectiles, 100);
 arrowImage.onload = function() {
-    c.save();
-    
-    c.rotate(dToR(15));
+    c.setTransform(1, 0, 0, 1, 0, 0);
+    c.rotate(dToR(0));
     c.drawImage(arrowImage, 400, 100, 100, 100);
-    arrowImage
-    c.restore();
 }
