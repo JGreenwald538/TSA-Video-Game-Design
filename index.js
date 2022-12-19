@@ -128,16 +128,16 @@ function lineToAngle(ctx, x1, y1, length, angle) {
     ctx.fill();
   
     return {
-      x: x2,
-      y: y2
+        x: x2,
+        y: y2
     };
   }
   
-  function draw_arrow(ctx, x1, y1, length, angle) {
+function draw_arrow(ctx, x1, y1, length, angle) {
     var pos = lineToAngle(ctx, x1, y1, length, angle);
     lineToAngle(ctx, pos.x, pos.y, 10, angle - 135);
     lineToAngle(ctx, pos.x, pos.y, 10, angle + 135);
-  }
+}
 
 function updateProjectiles(){
     for(let i = 0; i < projectiles.length; i++){
@@ -155,5 +155,6 @@ document.addEventListener("keydown", function(event) {
 
 const boats = [new Boat(2, 3, 5, "h"), new Boat(3, 6, 5, "v")];
 renderBackground();
-var projectile1 = new Projectile();
 setInterval(updateProjectiles, 100);
+// Draw the arrow using the image
+c.drawImage(arrowImage, 0, 0, 100, 100, 0, 0, 100, 100);
