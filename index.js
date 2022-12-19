@@ -2,8 +2,9 @@ const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
 const canvasWidth = 300;
 const canvasHeight = 510;
-const width = c.width;
-const height = c.height;
+const width = canvas.width;
+
+const height = canvas.height;
 const boxSize = canvasWidth/10;
 var arrowImage = new Image();
 arrowImage.src = "arrow.png";
@@ -161,10 +162,10 @@ renderBackground();
 
 setInterval(updateProjectiles, 100);
 arrowImage.onload = function() {
-    degrees = 15;
+    degrees = 20;
     c.save();
-    c.translate(-400*Math.cos(dToR(degrees)), -100*Math.sin(dToR(degrees)));
+    c.translate(width/2, height/2);
     c.rotate(dToR(degrees));
-    c.drawImage(arrowImage, 400, 100, 100, 100);
+    c.drawImage(arrowImage, width/2, height/2, 100, 100);
     c.restore();
 }
