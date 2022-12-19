@@ -3,8 +3,8 @@ const c = canvas.getContext('2d');
 const width = 300;
 const height = 510;
 const boxSize = width/10;
-arrowImage = new Image(100, 100);
-arrowImage.src = './arrow.png';
+arrowImage = new Image();
+arrowImage.src = 'arrow.png';
 
 class Boat{
     constructor(size, boxX, boxY, direction){
@@ -153,7 +153,7 @@ document.addEventListener("keydown", function(event) {
     }
 });
 
-const boats = [new Boat(2, 3, 5, "h"), new Boat(3, 6, 5, "v")];
-renderBackground();
-c.drawImage(arrowImage, 350, height/2, 100, 100);
+// const boats = [new Boat(2, 3, 5, "h"), new Boat(3, 6, 5, "v")];
+// renderBackground();
+c.drawImage(arrowImage, 50, 50);
 setInterval(updateProjectiles, 100);
