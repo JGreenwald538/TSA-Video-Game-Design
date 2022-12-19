@@ -160,9 +160,9 @@ renderBackground();
 setInterval(updateProjectiles, 100);
 arrowImage.onload = function() {
     c.save();
-    c.translate(20, 20);
-    c.rotate(dToR(0));
-    c.drawImage(arrowImage, 400, 100, 100, 100);
     
+    c.rotate(dToR(15));
+    c.drawImage(arrowImage, 400, 100, 100, 100);
+    arrowImage
     c.restore();
 }
