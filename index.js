@@ -5,10 +5,10 @@ const canvasHeight = 510;
 const width = canvas.width;
 const height = canvas.height;
 const boxSize = canvasWidth/10;
-const boats = [];
 const projectiles = []; 
 let didPlayersPick = false;
-const play
+const player1Boats = [];
+const player2Boats = [];
 
 
 class Boat{
@@ -170,9 +170,9 @@ function askForSize(boxX, boxY) {
     document.addEventListener("keydown", function(event) {
         if(event.key == "Enter") {
             if(sizeInput && directionInput) {
-                return(new Boat(size, boxX, boxY, direction));
                 c.clearRect(300, canvasHeight/2-500, canvasWidth, canvasHeight);
                 document.removeEventListener("keydown", arguments.callee);
+                return(new Boat(size, boxX, boxY, direction));
             }
         } else if(event.key == "Backspace") {
             return;
@@ -193,6 +193,8 @@ function askForSize(boxX, boxY) {
 function playersPicking() {
     c.font = "20px serif";
     c.fillText("Player 1:", 300, canvasHeight/2-225);
+    
+}
     
 
 
