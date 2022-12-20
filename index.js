@@ -24,7 +24,6 @@ class Boat{
         if(direction.toLowerCase() == "h") {
             for(let i = 0; i < size; i++) {
                 c.fillRect(boxX*boxSize+(boxSize*i), boxY*boxSize, boxSize, boxSize);
-                console.log()
             }
         } else if(direction.toLowerCase() == "v") {
             for(let i = 0; i < size; i++) {
@@ -121,7 +120,7 @@ function windReturn(direction, windSpeed, windDirection) {
 
 function lineToAngle(c, x1, y1, length, angle) {
     angle = (angle - 90) * Math.PI / 180;
-    var x2 = x1 + length * Math.cos(angle),
+    const x2 = x1 + length * Math.cos(angle),
         y2 = y1 + length * Math.sin(angle);
   
     c.beginPath();
@@ -137,7 +136,7 @@ function lineToAngle(c, x1, y1, length, angle) {
   }
   
 function draw_arrow(c, x1, y1, length, angle) {
-    var pos = lineToAngle(c, x1, y1, length, angle);
+    const pos = lineToAngle(c, x1, y1, length, angle);
     lineToAngle(c, pos.x, pos.y, 10, angle - 135);
     lineToAngle(c, pos.x, pos.y, 10, angle + 135);
 }
@@ -158,10 +157,10 @@ function askForSize(boxX, boxY) {
     c.fillText("Size: ", 300, canvasHeight/2-75);
     c.fillText("Direction: ", 300, canvasHeight/2-50);
 
-    var size = 0;
-    var direction = "h";
-    var sizeInput = false;
-    var directionInput = false;
+    let size = 0;
+    let direction = "h";
+    let sizeInput = false;
+    let directionInput = false;
     document.addEventListener("keydown", function(event) {
         if(event.key == "Enter") {
             if(sizeInput && directionInput) {
