@@ -14,6 +14,7 @@ let selected = false;
 
 class Boat{
     constructor(size, boxX, boxY, direction) {
+        renderBackground();
         this.size = size;
         this.boxX = boxX;
         this.boxY = boxY;
@@ -60,7 +61,9 @@ function renderBackground() {
     c.fillRect(canvasWidth/2-boxSize, canvasHeight-boxSize, boxSize*2, boxSize);
     c.fillRect(canvasWidth/2-boxSize, 0, boxSize*2, boxSize);
     for(let i = 0; i < player1Boats.length; i++) {
-        player1Boats[i].draw();
+        if(!player1Boats[i] == undefined) {
+            player1Boats[i].draw();
+        }
     }
     for(let i = 0; i < player2Boats.length; i++) {
         player2Boats[i].draw();
@@ -174,9 +177,7 @@ function askForSize(boxX, boxY) {
     document.addEventListener("keydown", function(event) {
         switch (event.key) {
             case "Enter":
-                console.log(boxX, size, boxX+size);
                 if(sizeInput && directionInput &&(boxX+size <= canvasWidth/boxSize && boxY+size <= canvasHeight/boxSize)) {
-                    console.log("hi")
                     c.clearRect(300, canvasHeight/2-220, canvasWidth, canvasHeight);
                     document.removeEventListener("keydown", arguments.callee);
                     selected = false;
