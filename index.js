@@ -155,11 +155,11 @@ document.addEventListener("keydown", function(event) {
 });
 document.addEventListener("click", function(event) {
     if(event.button == 0) {
-        if(event.clientX > canvasWidth/2-boxSize && event.clientX < canvasWidth/2+boxSize && event.clientY > canvasHeight-boxSize && event.clientY < canvasHeight)
+        console.log(width/boxSize > );
+        if(Math.floor(event.clientX/boxSize) < width/boxSize && Math.floor(event.clientY/boxSize) < height/boxSize){
             boats.push(new Boat(2, Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize), "h"));
-        else if(event.clientX > canvasWidth/2-boxSize && event.clientX < canvasWidth/2+boxSize && event.clientY > 0 && event.clientY < boxSize)
-            boats.push(new Boat(2, Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize), "v"));}
-    }
+        }
+    }   
 });
 
 const boats = [new Boat(2, 3, 5, "h"), new Boat(3, 6, 5, "v")];
