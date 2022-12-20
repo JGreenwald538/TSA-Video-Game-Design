@@ -175,6 +175,7 @@ function askForSize(boxX, boxY) {
         switch (event.key) {
             case "Enter":
                 if(sizeInput && directionInput &&(boxX+size <= width/boxSize && boxY+size <= height/boxSize)) {
+                    console.log("hi")
                     c.clearRect(300, canvasHeight/2-220, canvasWidth, canvasHeight);
                     document.removeEventListener("keydown", arguments.callee);
                     selected = false;
@@ -187,6 +188,7 @@ function askForSize(boxX, boxY) {
                 return(askForSize(boxX, boxY));
             case "h":
             case "v":
+                
                 direction = event.key;
                 directionInput = true;
                 c.fillText("Direction: " + direction, 300, canvasHeight/2-75);
