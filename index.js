@@ -6,6 +6,9 @@ const width = canvas.width;
 const height = canvas.height;
 const boxSize = canvasWidth/10;
 const boats = [];
+const projectiles = []; 
+let didPlayersPick = false;
+const play
 
 
 class Boat{
@@ -187,7 +190,12 @@ function askForSize(boxX, boxY) {
     });
 }
 
-var projectiles = [];
+function playersPicking() {
+    c.font = "20px serif";
+    c.fillText("Player 1:", 300, canvasHeight/2-225);
+    
+
+
 document.addEventListener("keydown", function(event) {
     if(event.key == " ") {
         projectiles.push(new Projectile());
