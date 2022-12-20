@@ -192,8 +192,18 @@ function askForSize(boxX, boxY) {
 
 function playersPicking() {
     c.font = "20px serif";
-    c.fillText("Player 1:", 300, canvasHeight/2-225);
-    
+    if(player1Boats.length <= 5){
+        c.fillText("Player 1, Pick a Boat", 300, canvasHeight/2-225);
+        document.addEventListener("click", function(event) {
+            if(event.button == 0) {
+                if(Math.floor(event.clientX/boxSize) < canvasWidth/boxSize && Math.floor(event.clientY/boxSize) < canvasHeight/boxSize) {
+                    player1Boats.push(askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize)));
+                    
+                }
+            }   
+        });
+    }
+
 }
     
 
@@ -203,13 +213,7 @@ document.addEventListener("keydown", function(event) {
         projectiles.push(new Projectile());
     } 
 });
-document.addEventListener("click", function(event) {
-    if(event.button == 0) {
-        if(Math.floor(event.clientX/boxSize) < canvasWidth/boxSize && Math.floor(event.clientY/boxSize) < canvasHeight/boxSize) {
-            askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize));
-        }
-    }   
-});
+
 
 renderBackground();
 setInterval(updateProjectiles, 100);
