@@ -210,6 +210,7 @@ function playersPicking() {
                     document.removeEventListener("click", arguments.callee);
                     playersPicking();
                     c.strokeStyle = "yellow";
+                    c.strokeRect(Math.floor(event.clientX/boxSize)*boxSize, )
                 }
             }   
         });
