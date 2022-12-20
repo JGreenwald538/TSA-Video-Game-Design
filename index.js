@@ -8,25 +8,26 @@ const boxSize = canvasWidth/10;
 
 
 class Boat{
-    constructor(size, boxX, boxY, direction){
+    constructor(size, boxX, boxY, direction) {
         this.size = size;
         this.boxX = boxX;
         this.boxY = boxY;
         this.direction = direction;
         this.draw();
     } 
-    draw(){
+    draw() {
         var direction = this.direction;
         var size = this.size;
         var boxX = this.boxX;
         var boxY = this.boxY;
         c.fillStyle = "rgb(155, 103, 60)";
         if(direction.toLowerCase() == "h") {
-            for(let i = 0; i < size; i++){
+            for(let i = 0; i < size; i++) {
                 c.fillRect(boxX*boxSize+(boxSize*i), boxY*boxSize, boxSize, boxSize);
+                console.log()
             }
         } else if(direction.toLowerCase() == "v") {
-            for(let i = 0; i < size; i++){
+            for(let i = 0; i < size; i++) {
                 c.fillRect(boxX*boxSize, boxY*boxSize+(boxSize*i), boxSize, boxSize);
             }
         }
@@ -34,31 +35,31 @@ class Boat{
 }
 
 
-function dToR(degrees){
+function dToR(degrees) {
     var pi = Math.PI;
     return degrees * (pi/180);
 }
 
 
-const renderBackground = () => {
+function renderBackground() {
     c.fillStyle = "blue";
     c.fillRect(0, 0, canvasWidth, canvasHeight);
     c.strokeStyle = "black";
-    for(let x = 0; x < canvasWidth/boxSize; x++){
-        for(let y = 0; y < canvasHeight/boxSize; y++){
+    for(let x = 0; x < canvasWidth/boxSize; x++) {
+        for(let y = 0; y < canvasHeight/boxSize; y++) {
             c.strokeRect(boxSize*x, boxSize*y, boxSize, boxSize);
         }
     }
     c.fillStyle = "gray";
     c.fillRect(canvasWidth/2-boxSize, canvasHeight-boxSize, boxSize*2, boxSize);
     c.fillRect(canvasWidth/2-boxSize, 0, boxSize*2, boxSize);
-    for(let i = 0; i < boats.length; i++){
+    for(let i = 0; i < boats.length; i++) {
         boats[i].draw();
     }
 }
 
 class Projectile{
-    constructor(){
+    constructor() {
         this.x = canvasWidth/2
         this.y = 0
         this.ogx = canvasWidth/2
@@ -74,13 +75,13 @@ class Projectile{
         this.writeWindSpeed();
         draw_arrow(c, 360, canvasHeight/2, 60, this.windDirection);
     }
-    update(degrees, v=5){
-        if(this.visible){
+    update(degrees, v=5) {
+        if(this.visible) {
             vx = 0;
             degrees *= 2
             if(degrees > 90) {
                 degrees = 180 - degrees
-                var vx = v*Math.cos(dToR(degrees)) * -1; 
+                var vx = v*Math.cos(dToR(degrees))*(-1); 
             } else{
                 var vx = v*Math.cos(dToR(degrees));
             }
@@ -90,7 +91,7 @@ class Projectile{
             this.displacement = ((this.x-this.ogx)**2 + (this.y-this.ogy)**2)**(1/2);
             if(this.displacement > this.power*3+200) {
                 this.remove();
-            } else if(-5 >= this.x || this.x >= canvasWidth-5 || -5 > this.y || this.y > canvasHeight-5){
+            } else if(-5 >= this.x || this.x >= canvasWidth-5 || -5 > this.y || this.y > canvasHeight-5) {
                 this.remove();
             } else {
                 renderBackground();
@@ -99,21 +100,21 @@ class Projectile{
             }
         }
     }
-    remove(){
+    remove() {
         this.visible = false;
         renderBackground();
     }
-    writeWindSpeed(){
+    writeWindSpeed() {
         c.font = "48px serif";
         c.fillText(Math.floor(this.windDirection) + " degrees", 300, canvasHeight/2-100);
     }
 }
 
-function windReturn(direction, windSpeed, windDirection){
+function windReturn(direction, windSpeed, windDirection) {
     
-    if(direction == "x"){
+    if(direction == "x") {
         return windSpeed*Math.cos(dToR(windDirection-90));
-    } else if(direction == "y"){
+    } else if(direction == "y") {
         return windSpeed*Math.sin(dToR(windDirection-90));
     }
 }
@@ -141,13 +142,13 @@ function draw_arrow(c, x1, y1, length, angle) {
     lineToAngle(c, pos.x, pos.y, 10, angle + 135);
 }
 
-function updateProjectiles(){
-    for(let i = 0; i < projectiles.length; i++){
+function updateProjectiles() {
+    for(let i = 0; i < projectiles.length; i++) {
         projectiles[i].update(45);
     }
 }
 
-function askForSize(boxX, boxY){
+function askForSize(boxX, boxY) {
     c.font = "20px serif";
     c.fillText("Type the number for the", 300, canvasHeight/2-200);
     c.fillText("Size of the boat(2-5)", 300, canvasHeight/2-175);
@@ -163,7 +164,7 @@ function askForSize(boxX, boxY){
     var directionInput = false;
     document.addEventListener("keydown", function(event) {
         if(event.key == "Enter") {
-            if(sizeInput && directionInput){
+            if(sizeInput && directionInput) {
                 boats.push(new Boat(size, boxX, boxY, direction));
                 c.clearRect(300, canvasHeight/2-500, canvasWidth, canvasHeight);
             }
@@ -193,7 +194,7 @@ document.addEventListener("keydown", function(event) {
 });
 document.addEventListener("click", function(event) {
     if(event.button == 0) {
-        if(Math.floor(event.clientX/boxSize) < canvasWidth/boxSize && Math.floor(event.clientY/boxSize) < canvasHeight/boxSize){
+        if(Math.floor(event.clientX/boxSize) < canvasWidth/boxSize && Math.floor(event.clientY/boxSize) < canvasHeight/boxSize) {
             askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize));
         }
     }   
