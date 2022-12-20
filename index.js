@@ -174,7 +174,8 @@ function askForSize(boxX, boxY) {
     document.addEventListener("keydown", function(event) {
         switch (event.key) {
             case "Enter":
-                if(sizeInput && directionInput &&(boxX+size <= width/boxSize && boxY+size <= height/boxSize)) {
+                console.log(boxX+size, boxY+size, canvasWidth/boxSize, canvasHeight/boxSize);
+                if(sizeInput && directionInput &&(boxX+size <= canvasWidth/boxSize && boxY+size <= canvasHeight/boxSize)) {
                     console.log("hi")
                     c.clearRect(300, canvasHeight/2-220, canvasWidth, canvasHeight);
                     document.removeEventListener("keydown", arguments.callee);
@@ -188,18 +189,21 @@ function askForSize(boxX, boxY) {
                 return(askForSize(boxX, boxY));
             case "h":
             case "v":
-                
-                direction = event.key;
-                directionInput = true;
-                c.fillText("Direction: " + direction, 300, canvasHeight/2-75);
+                if(!directionInput) {
+                    direction = event.key;
+                    directionInput = true;
+                    c.fillText("Direction: " + direction, 300, canvasHeight/2-75);
+                }
                 break;
             case "2":
             case "3":
             case "4":
             case "5":
-                size = event.key;
-                sizeInput = true;
-                c.fillText("Size: " + size, 300, canvasHeight/2-100);
+                if(!sizeInput) {
+                    size = event.key;
+                    sizeInput = true;
+                    c.fillText("Size: " + size, 300, canvasHeight/2-100);
+                }
         }
     });
 }
