@@ -151,7 +151,10 @@ var projectiles = [];
 document.addEventListener("keydown", function(event) {
     if(event.key == " ") {
         projectiles.push(new Projectile());
-    }
+    } 
+});
+document.addEventListener("click", function(event) {
+    console.log(event.clientX, event.clientY);
 });
 
 const boats = [new Boat(2, 3, 5, "h"), new Boat(3, 6, 5, "v")];
