@@ -147,6 +147,11 @@ function updateProjectiles(){
     }
 }
 
+function askForSize(){
+    c.font = "48px serif";
+    c.fillText("Type the number for the size of the boat(2-5)", 300, canvasHeight/2-200);
+}
+
 var projectiles = [];
 document.addEventListener("keydown", function(event) {
     if(event.key == " ") {
@@ -155,9 +160,9 @@ document.addEventListener("keydown", function(event) {
 });
 document.addEventListener("click", function(event) {
     if(event.button == 0) {
-        console.log(width/boxSize > );
-        if(Math.floor(event.clientX/boxSize) < width/boxSize && Math.floor(event.clientY/boxSize) < height/boxSize){
+        if(Math.floor(event.clientX/boxSize) < canvasWidth/boxSize && Math.floor(event.clientY/boxSize) < canvasHeight/boxSize){
             boats.push(new Boat(2, Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize), "h"));
+            askForSize();
         }
     }   
 });
