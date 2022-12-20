@@ -167,7 +167,7 @@ function askForSize(boxX, boxY) {
     document.addEventListener("keydown", function(event) {
         if(event.key == "Enter") {
             if(sizeInput && directionInput) {
-                boats.push(new Boat(size, boxX, boxY, direction));
+                return(new Boat(size, boxX, boxY, direction));
                 c.clearRect(300, canvasHeight/2-500, canvasWidth, canvasHeight);
                 document.removeEventListener("keydown", arguments.callee);
             }
@@ -185,8 +185,6 @@ function askForSize(boxX, boxY) {
             sizeInput = true;
         }
     });
-    
-
 }
 
 var projectiles = [];
