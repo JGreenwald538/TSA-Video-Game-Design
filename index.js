@@ -161,10 +161,9 @@ function askForSize(boxX, boxY) {
     c.fillText("Type the number for the", 300, canvasHeight/2-200);
     c.fillText("Size of the boat(2-5)", 300, canvasHeight/2-175);
     c.fillText("Press enter to submit", 300, canvasHeight/2-150);
-    c.fillText("Press backspace to cancel", 300, canvasHeight/2-125);
-    c.fillText("Press escape to exit", 300, canvasHeight/2-100);
-    c.fillText("Size: ", 300, canvasHeight/2-75);
-    c.fillText("Direction: ", 300, canvasHeight/2-50);
+    c.fillText("Press escape to reset", 300, canvasHeight/2-125);
+    c.fillText("Size: ", 300, canvasHeight/2-100);
+    c.fillText("Direction: ", 300, canvasHeight/2-75);
 
     let size = 0;
     let direction = "h";
@@ -173,21 +172,21 @@ function askForSize(boxX, boxY) {
     document.addEventListener("keydown", function(event) {
         switch (event.key) {
             case "Enter":
-                if(sizeInput && directionInput) {
+                if(sizeInput && directionInput &&(boxX+size < width/boxSize && boxY+size < height/boxSize)) {
                     c.clearRect(300, canvasHeight/2-220, canvasWidth, canvasHeight);
                     document.removeEventListener("keydown", arguments.callee);
                     return(new Boat(size, boxX, boxY, direction));
                 }
                 break;
-            case "Backspace":
-                return;
             case "Escape":
-                return;
+                c.clearRect(300, canvasHeight/2-220, canvasWidth, canvasHeight);
+                document.removeEventListener("keydown", arguments.callee);
+                return(askForSize(boxX, boxY));
             case "h":
             case "v":
                 direction = event.key;
                 directionInput = true;
-                c.fillText("Direction: " + direction, 300, canvasHeight/2-50);
+                c.fillText("Direction: " + direction, 300, canvasHeight/2-75);
                 break;
             case "2":
             case "3":
@@ -195,7 +194,7 @@ function askForSize(boxX, boxY) {
             case "5":
                 size = event.key;
                 sizeInput = true;
-                c.fillText("Size: " + size, 300, canvasHeight/2-75);
+                c.fillText("Size: " + size, 300, canvasHeight/2-100);
         }
     });
 }
