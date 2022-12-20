@@ -40,7 +40,7 @@ function dToR(degrees){
 }
 
 
-function renderBackground(){
+const renderBackground = () => {
     c.fillStyle = "blue";
     c.fillRect(0, 0, canvasWidth, canvasHeight);
     c.strokeStyle = "black";
