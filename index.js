@@ -147,9 +147,44 @@ function updateProjectiles(){
     }
 }
 
-function askForSize(){
-    c.font = "48px serif";
-    c.fillText("Type the number for the size of the boat(2-5)", 300, canvasHeight/2-200);
+function askForSize(boxX, boxY){
+    c.font = "20px serif";
+    c.fillText("Type the number for the", 300, canvasHeight/2-200);
+    c.fillText("size of the boat(2-5)", 300, canvasHeight/2-175);
+    c.fillText("Press enter to submit", 300, canvasHeight/2-150);
+    c.fillText("Press backspace to cancel", 300, canvasHeight/2-125);
+    c.fillText("Press escape to exit", 300, canvasHeight/2-100);
+    c.fillText("Size: ", 300, canvasHeight/2-75);
+    c.fillText("Direction: ", 300, canvasHeight/2-50);
+
+    var size = 0;
+    var direction = "h";
+    var sizeInput = false;
+    var directionInput = false;
+    var cancel = false;
+    var exit = false;
+    document.addEventListener("keydown", function(event) {
+        if(event.key == "Enter") {
+            sizeInput = true;
+        } else if(event.key == "Backspace") {
+            cancel = true;
+        } else if(event.key == "Escape") {
+            exit = true;
+        } else if(event.key == "h" || event.key == "v") {
+            direction = event.key;
+            directionInput = true;
+        } else if(event.key == "2" || event.key == "3" || event.key == "4" || event.key == "5") {
+            size = event.key;
+        }
+    });
+    if(sizeInput && directionInput){
+        boats.push(new Boat(size, boxX, boxY, direction));
+    } else if(cancel){
+        return;
+    } else if(exit){
+        return;
+    }
+
 }
 
 var projectiles = [];
@@ -161,8 +196,7 @@ document.addEventListener("keydown", function(event) {
 document.addEventListener("click", function(event) {
     if(event.button == 0) {
         if(Math.floor(event.clientX/boxSize) < canvasWidth/boxSize && Math.floor(event.clientY/boxSize) < canvasHeight/boxSize){
-            boats.push(new Boat(2, Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize), "h"));
-            askForSize();
+            askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize));
         }
     }   
 });
