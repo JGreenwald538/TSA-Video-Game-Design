@@ -180,16 +180,23 @@ function askForSize(boxX, boxY) {
                 }
             case "Backspace":
                 return;
-        } else if(event.key == "Escape") {
-            return;
-        } else if(event.key == "h" || event.key == "v") {
-            direction = event.key;
-            directionInput = true;
-            c.fillText("Direction: " + direction, 300, canvasHeight/2-50);
-        } else if(event.key == "2" || event.key == "3" || event.key == "4" || event.key == "5") {
-            size = event.key;
-            c.fillText("Size: " + size, 300, canvasHeight/2-75);
-            sizeInput = true;
+            case "Escape":
+                return;
+            case "h":
+                direction = "h";
+                directionInput = true;
+                c.fillText("Direction: " + direction, 300, canvasHeight/2-50);
+            case "v":
+                direction = "v";
+                directionInput = true;
+                c.fillText("Direction: " + direction, 300, canvasHeight/2-50);
+            case "2":
+            case "3":
+            case "4":
+            case "5":
+                size = event.key;
+                sizeInput = true;
+                c.fillText("Size: " + size, 300, canvasHeight/2-75);
         }
     });
 }
