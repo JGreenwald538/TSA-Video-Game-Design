@@ -150,7 +150,7 @@ function updateProjectiles(){
 function askForSize(boxX, boxY){
     c.font = "20px serif";
     c.fillText("Type the number for the", 300, canvasHeight/2-200);
-    c.fillText("size of the boat(2-5)", 300, canvasHeight/2-175);
+    c.fillText("Size of the boat(2-5)", 300, canvasHeight/2-175);
     c.fillText("Press enter to submit", 300, canvasHeight/2-150);
     c.fillText("Press backspace to cancel", 300, canvasHeight/2-125);
     c.fillText("Press escape to exit", 300, canvasHeight/2-100);
@@ -161,29 +161,27 @@ function askForSize(boxX, boxY){
     var direction = "h";
     var sizeInput = false;
     var directionInput = false;
-    var cancel = false;
-    var exit = false;
     document.addEventListener("keydown", function(event) {
         if(event.key == "Enter") {
-            sizeInput = true;
+            if(sizeInput && directionInput){
+                boats.push(new Boat(size, boxX, boxY, direction));
+                c.clearRect(300, canvasHeight/2-500, canvasWidth, canvasHeight);
+            }
         } else if(event.key == "Backspace") {
-            cancel = true;
+            return;
         } else if(event.key == "Escape") {
-            exit = true;
+            return;
         } else if(event.key == "h" || event.key == "v") {
             direction = event.key;
             directionInput = true;
+            c.fillText("Direction: " + direction, 300, canvasHeight/2-50);
         } else if(event.key == "2" || event.key == "3" || event.key == "4" || event.key == "5") {
             size = event.key;
+            c.fillText("Size: " + size, 300, canvasHeight/2-75);
+            sizeInput = true;
         }
     });
-    if(sizeInput && directionInput){
-        boats.push(new Boat(size, boxX, boxY, direction));
-    } else if(cancel){
-        return;
-    } else if(exit){
-        return;
-    }
+    
 
 }
 
