@@ -9,6 +9,7 @@ const projectiles = [];
 let didPlayersPick = false;
 const player1Boats = [];
 const player2Boats = [];
+let selected = false;
 
 
 class Boat{
@@ -169,12 +170,14 @@ function askForSize(boxX, boxY) {
     let direction = "h";
     let sizeInput = false;
     let directionInput = false;
+    selected = true;
     document.addEventListener("keydown", function(event) {
         switch (event.key) {
             case "Enter":
                 if(sizeInput && directionInput &&(boxX+size <= width/boxSize && boxY+size <= height/boxSize)) {
                     c.clearRect(300, canvasHeight/2-220, canvasWidth, canvasHeight);
                     document.removeEventListener("keydown", arguments.callee);
+                    selected = false;
                     return(new Boat(size, boxX, boxY, direction));
                 }
                 break;
@@ -204,24 +207,26 @@ function playersPicking() {
     if(player1Boats.length <= 5){
         c.fillText("Player 1, Pick a Boat", 300, canvasHeight/2-225);
         document.addEventListener("click", function(event) {
-            if(event.button == 0) {
+            if(event.button == 0 && !selected) {
                 if(Math.floor(event.clientX/boxSize) < canvasWidth/boxSize && Math.floor(event.clientY/boxSize) < canvasHeight/boxSize) {
                     player1Boats.push(askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize)));
                     document.removeEventListener("click", arguments.callee);
                     playersPicking();
                     c.strokeStyle = "yellow";
-                    c.strokeRect(Math.floor(event.clientX/boxSize)*boxSize, )
+                    c.strokeRect(Math.floor(event.clientX/boxSize)*boxSize, Math.floor(event.clientY/boxSize)*boxSize, boxSize, boxSize);
                 }
             }   
         });
     } else {
         c.fillText("Player 2, Pick a Boat", 300, canvasHeight/2-225);
         document.addEventListener("click", function(event) {
-            if(event.button == 0) {
+            if(event.button == 0 && !selected) {
                 if(Math.floor(event.clientX/boxSize) < canvasWidth/boxSize && Math.floor(event.clientY/boxSize) < canvasHeight/boxSize) {
                     player2Boats.push(askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize)));
                     document.removeEventListener("click", arguments.callee);
                     playersPicking();
+                    c.strokeStyle = "yellow";
+                    c.strokeRect(Math.floor(event.clientX/boxSize)*boxSize, Math.floor(event.clientY/boxSize)*boxSize, boxSize, boxSize);
                 }
             }   
         });
