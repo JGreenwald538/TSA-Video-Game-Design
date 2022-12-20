@@ -174,22 +174,21 @@ function askForSize(boxX, boxY) {
         switch (event.key) {
             case "Enter":
                 if(sizeInput && directionInput) {
-                    c.clearRect(300, canvasHeight/2-225, canvasWidth, canvasHeight);
+                    c.clearRect(300, canvasHeight/2-220, canvasWidth, canvasHeight);
                     document.removeEventListener("keydown", arguments.callee);
                     return(new Boat(size, boxX, boxY, direction));
                 }
+                break;
             case "Backspace":
                 return;
             case "Escape":
                 return;
             case "h":
-                direction = "h";
-                directionInput = true;
-                c.fillText("Direction: " + direction, 300, canvasHeight/2-50);
             case "v":
-                direction = "v";
+                direction = event.key;
                 directionInput = true;
                 c.fillText("Direction: " + direction, 300, canvasHeight/2-50);
+                break;
             case "2":
             case "3":
             case "4":
