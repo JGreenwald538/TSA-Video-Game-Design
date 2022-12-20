@@ -172,7 +172,7 @@ function askForSize(boxX, boxY) {
     document.addEventListener("keydown", function(event) {
         switch (event.key) {
             case "Enter":
-                if(sizeInput && directionInput &&(boxX+size < width/boxSize && boxY+size < height/boxSize)) {
+                if(sizeInput && directionInput &&(boxX+size <= width/boxSize && boxY+size <= height/boxSize)) {
                     c.clearRect(300, canvasHeight/2-220, canvasWidth, canvasHeight);
                     document.removeEventListener("keydown", arguments.callee);
                     return(new Boat(size, boxX, boxY, direction));
@@ -209,6 +209,7 @@ function playersPicking() {
                     player1Boats.push(askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize)));
                     document.removeEventListener("click", arguments.callee);
                     playersPicking();
+                    c.strokeStyle = "yellow";
                 }
             }   
         });
