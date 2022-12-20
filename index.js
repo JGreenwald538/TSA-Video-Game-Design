@@ -24,10 +24,12 @@ class Boat{
         if(direction.toLowerCase() == "h") {
             for(let i = 0; i < size; i++) {
                 c.fillRect(boxX*boxSize+(boxSize*i), boxY*boxSize, boxSize, boxSize);
+                console.log("h");
             }
         } else if(direction.toLowerCase() == "v") {
             for(let i = 0; i < size; i++) {
                 c.fillRect(boxX*boxSize, boxY*boxSize+(boxSize*i), boxSize, boxSize);
+                console.log("v");
             }
         }
     }
