@@ -3,11 +3,8 @@ const c = canvas.getContext('2d');
 const canvasWidth = 300;
 const canvasHeight = 510;
 const width = canvas.width;
-
 const height = canvas.height;
 const boxSize = canvasWidth/10;
-var arrowImage = new Image();
-arrowImage.src = "arrow.png";
 
 
 class Boat{
@@ -36,11 +33,11 @@ class Boat{
     }
 }
 
-function dToR(degrees)
-{
-  var pi = Math.PI;
-  return degrees * (pi/180);
+function dToR(degrees){
+    var pi = Math.PI;
+    return degrees * (pi/180);
 }
+
 
 function renderBackground(){
     c.fillStyle = "blue";
@@ -70,7 +67,7 @@ class Projectile{
         c.fillRect(this.x, this.y, 5, 5)
         this.displacement = 0;
         this.power = 40;
-        this.windSpeed = (Math.random()*2)
+        this.windSpeed = (Math.random()*1)
         this.windDirection = (Math.random()*360);
         c.clearRect(canvasWidth+1, 0, canvasWidth*2, canvasHeight);
         this.writeWindSpeed();
@@ -120,16 +117,16 @@ function windReturn(direction, windSpeed, windDirection){
     }
 }
 
-function lineToAngle(ctx, x1, y1, length, angle) {
+function lineToAngle(c, x1, y1, length, angle) {
     angle = (angle - 90) * Math.PI / 180;
     var x2 = x1 + length * Math.cos(angle),
         y2 = y1 + length * Math.sin(angle);
   
-    ctx.beginPath();
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
-    ctx.stroke();
-    ctx.fill();
+    c.beginPath();
+    c.moveTo(x1, y1);
+    c.lineTo(x2, y2);
+    c.stroke();
+    c.fill();
   
     return {
         x: x2,
@@ -137,10 +134,10 @@ function lineToAngle(ctx, x1, y1, length, angle) {
     };
   }
   
-function draw_arrow(ctx, x1, y1, length, angle) {
-    var pos = lineToAngle(ctx, x1, y1, length, angle);
-    lineToAngle(ctx, pos.x, pos.y, 10, angle - 135);
-    lineToAngle(ctx, pos.x, pos.y, 10, angle + 135);
+function draw_arrow(c, x1, y1, length, angle) {
+    var pos = lineToAngle(c, x1, y1, length, angle);
+    lineToAngle(c, pos.x, pos.y, 10, angle - 135);
+    lineToAngle(c, pos.x, pos.y, 10, angle + 135);
 }
 
 function updateProjectiles(){
@@ -152,21 +149,10 @@ function updateProjectiles(){
 var projectiles = [];
 document.addEventListener("keydown", function(event) {
     if(event.key == " ") {
-        console.log("space");
         projectiles.push(new Projectile());
     }
 });
 
 const boats = [new Boat(2, 3, 5, "h"), new Boat(3, 6, 5, "v")];
 renderBackground();
-
 setInterval(updateProjectiles, 100);
-arrowImage.onload = function() {
-    degrees = 0;
-    c.save();
-    c.translate(width+arrowImage.width/2, height+arrowImage.height/2);
-    c.rotate(dToR(degrees));
-    c.translate(-(width+arrowImage.width/2), -(height+arrowImage.height/2));
-    c.drawImage(arrowImage, 200, 200, 75, 75);
-    c.restore();
-}
