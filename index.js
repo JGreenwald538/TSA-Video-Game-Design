@@ -5,6 +5,7 @@ const canvasHeight = 510;
 const width = canvas.width;
 const height = canvas.height;
 const boxSize = canvasWidth/10;
+const boats = [];
 
 
 class Boat{
@@ -168,6 +169,7 @@ function askForSize(boxX, boxY) {
             if(sizeInput && directionInput) {
                 boats.push(new Boat(size, boxX, boxY, direction));
                 c.clearRect(300, canvasHeight/2-500, canvasWidth, canvasHeight);
+                document.removeEventListener("keydown", arguments.callee);
             }
         } else if(event.key == "Backspace") {
             return;
@@ -201,6 +203,5 @@ document.addEventListener("click", function(event) {
     }   
 });
 
-const boats = [new Boat(2, 3, 5, "h"), new Boat(3, 6, 5, "v")];
 renderBackground();
 setInterval(updateProjectiles, 100);
