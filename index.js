@@ -174,7 +174,7 @@ function askForSize(boxX, boxY) {
     document.addEventListener("keydown", function(event) {
         switch (event.key) {
             case "Enter":
-                console.log(boxX+size, boxY+size, canvasWidth/boxSize, canvasHeight/boxSize);
+                console.log(boxX, size, boxX+size);
                 if(sizeInput && directionInput &&(boxX+size <= canvasWidth/boxSize && boxY+size <= canvasHeight/boxSize)) {
                     console.log("hi")
                     c.clearRect(300, canvasHeight/2-220, canvasWidth, canvasHeight);
@@ -200,7 +200,7 @@ function askForSize(boxX, boxY) {
             case "4":
             case "5":
                 if(!sizeInput) {
-                    size = event.key;
+                    size = parseInt(event.key);
                     sizeInput = true;
                     c.fillText("Size: " + size, 300, canvasHeight/2-100);
                 }
