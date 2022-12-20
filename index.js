@@ -33,6 +33,7 @@ class Boat{
     }
 }
 
+
 function dToR(degrees){
     var pi = Math.PI;
     return degrees * (pi/180);
