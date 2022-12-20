@@ -58,8 +58,11 @@ function renderBackground() {
     c.fillStyle = "gray";
     c.fillRect(canvasWidth/2-boxSize, canvasHeight-boxSize, boxSize*2, boxSize);
     c.fillRect(canvasWidth/2-boxSize, 0, boxSize*2, boxSize);
-    for(let i = 0; i < boats.length; i++) {
-        boats[i].draw();
+    for(let i = 0; i < player1Boats.length; i++) {
+        player1Boats[i].draw();
+    }
+    for(let i = 0; i < player2Boats.length; i++) {
+        player2Boats[i].draw();
     }
 }
 
@@ -168,14 +171,15 @@ function askForSize(boxX, boxY) {
     let sizeInput = false;
     let directionInput = false;
     document.addEventListener("keydown", function(event) {
-        if(event.key == "Enter") {
-            if(sizeInput && directionInput) {
-                c.clearRect(300, canvasHeight/2-500, canvasWidth, canvasHeight);
-                document.removeEventListener("keydown", arguments.callee);
-                return(new Boat(size, boxX, boxY, direction));
-            }
-        } else if(event.key == "Backspace") {
-            return;
+        switch (event.key) {
+            case "Enter":
+                if(sizeInput && directionInput) {
+                    c.clearRect(300, canvasHeight/2-225, canvasWidth, canvasHeight);
+                    document.removeEventListener("keydown", arguments.callee);
+                    return(new Boat(size, boxX, boxY, direction));
+                }
+            case "Backspace":
+                return;
         } else if(event.key == "Escape") {
             return;
         } else if(event.key == "h" || event.key == "v") {
@@ -198,14 +202,25 @@ function playersPicking() {
             if(event.button == 0) {
                 if(Math.floor(event.clientX/boxSize) < canvasWidth/boxSize && Math.floor(event.clientY/boxSize) < canvasHeight/boxSize) {
                     player1Boats.push(askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize)));
-                    
+                    document.removeEventListener("click", arguments.callee);
+                    playersPicking();
+                }
+            }   
+        });
+    } else {
+        c.fillText("Player 2, Pick a Boat", 300, canvasHeight/2-225);
+        document.addEventListener("click", function(event) {
+            if(event.button == 0) {
+                if(Math.floor(event.clientX/boxSize) < canvasWidth/boxSize && Math.floor(event.clientY/boxSize) < canvasHeight/boxSize) {
+                    player2Boats.push(askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize)));
+                    document.removeEventListener("click", arguments.callee);
+                    playersPicking();
                 }
             }   
         });
     }
-
 }
-    
+
 
 
 document.addEventListener("keydown", function(event) {
@@ -217,3 +232,4 @@ document.addEventListener("keydown", function(event) {
 
 renderBackground();
 setInterval(updateProjectiles, 100);
+playersPicking();
