@@ -218,7 +218,7 @@ function askForSize(boxX, boxY, player) {
 
 function checkIfCanUseSize(size, player){
     if(player == 1){
-        found = player1BoatsSizes.find(size);
+        found = player1BoatsSizes.find(element => element == size);
         if(found == undefined){
             return false;
         } else {
@@ -226,7 +226,7 @@ function checkIfCanUseSize(size, player){
             return true;
         }
     } else if(player == 2){
-        found = player2BoatsSizes.find(element => element > 10);
+        found = player2BoatsSizes.find(element => element == size);
         if(found == undefined){
             return false;
         } else {
