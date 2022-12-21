@@ -12,7 +12,12 @@ const player2Boats = [];
 let selected = false;
 const player1BoatsSizes = [5, 4, 3, 3, 2];
 const player2BoatsSizes = [5, 4, 3, 3, 2];
-const mapLa
+const mapLayout = [];
+mapLayout[0] = [0, 0, 0, 0, 1, 1, 0, 0, 0, 0];
+for (let i = 1; i <= 15; i++) {
+    mapLayout[i] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+}
+mapLayout[16] = [0, 0, 0, 0, 1, 1, 0, 0, 0, 0];
 
 
 class Boat{
@@ -176,7 +181,7 @@ function askForSize(boxX, boxY, player) {
     document.addEventListener("keydown", function(event) {
         switch (event.key) {
             case "Enter":
-                if(sizeInput && directionInput && checkIfSizeFits(size, boxX, boxY, direction)){
+                if(sizeInput && directionInput && checkIfSizeFits(size, boxX, boxY, direction) && !isAnythingThere(boxX, boxY, size, direction)) {
                     c.clearRect(300, canvasHeight/2-250, canvasWidth, canvasHeight);
                     document.removeEventListener("keydown", arguments.callee);
                     selected = false;
@@ -187,6 +192,13 @@ function askForSize(boxX, boxY, player) {
                     } else if(player == 2) {
                         player2Boats.push(boat);
                         player2BoatsSizes.splice(player2BoatsSizes.indexOf(size), 1);
+                    }
+                    for (let i = 0; i < size; i++) {
+                        if(direction == "h") {
+                            mapLayout[boxY][boxX+i] = 1;
+                        } else if(direction == "v") {
+                            mapLayout[boxY+i][boxX] = 1;
+                        }
                     }
                 }
                 playersPicking();
@@ -252,6 +264,23 @@ function checkIfSizeFits(size, x, y, direction){
             return false;
         }
     }
+}
+
+function isAnythingThere(x, y, size, direction){
+    if(direction == "h"){
+        for(let i = 0; i < size; i++){
+            if(mapLayout[y][x+i] == 1){
+                return true;
+            }
+        }
+    } else if(direction == "v"){
+        for(let i = 0; i < size; i++){
+            if(mapLayout[y+i][x] == 1){
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 function playersPicking() {
