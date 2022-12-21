@@ -191,7 +191,7 @@ function askForSize(boxX, boxY, player) {
                 playersPicking();
                 break;
             case "Escape":
-                c.clearRect(300, canvasHeight/2-220, canvasWidth, canvasHeight);
+                c.clearRect(300, canvasHeight/2-250, canvasWidth, canvasHeight);
                 document.removeEventListener("keydown", arguments.callee);
                 selected = false;
                 renderBackground();
