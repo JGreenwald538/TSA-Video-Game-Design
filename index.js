@@ -49,6 +49,7 @@ function dToR(degrees) {
 
 
 function renderBackground() {
+    console.log(player1Boats);
     c.fillStyle = "blue";
     c.fillRect(0, 0, canvasWidth, canvasHeight);
     c.strokeStyle = "black";
@@ -61,12 +62,12 @@ function renderBackground() {
     c.fillRect(canvasWidth/2-boxSize, canvasHeight-boxSize, boxSize*2, boxSize);
     c.fillRect(canvasWidth/2-boxSize, 0, boxSize*2, boxSize);
     for(let i = 0; i < player1Boats.length; i++) {
-        if(!player1Boats[i] == undefined) {
+        if(!player1Boats[i] === undefined) {
             player1Boats[i].draw();
         }
     }
     for(let i = 0; i < player2Boats.length; i++) {
-        if(!player2Boats[i] == undefined) {
+        if(!player2Boats[i] === undefined) {
             player2Boats[i].draw();
         }
     }
@@ -183,6 +184,7 @@ function askForSize(boxX, boxY) {
                     c.clearRect(300, canvasHeight/2-220, canvasWidth, canvasHeight);
                     document.removeEventListener("keydown", arguments.callee);
                     selected = false;
+                    console.log(player1Boats);
                     return(new Boat(size, boxX, boxY, direction));
                 }
                 break;
@@ -191,7 +193,9 @@ function askForSize(boxX, boxY) {
                 document.removeEventListener("keydown", arguments.callee);
                 selected = false;
                 renderBackground();
+                console.log(player1Boats);
                 removeUndefineds();
+                
                 return;
             case "h":
             case "v":
@@ -217,12 +221,12 @@ function askForSize(boxX, boxY) {
 function removeUndefineds(){
     for(let i = 0; i < player1Boats.length; i++) {
         if(player1Boats[i] == undefined) {
-            player1Boats.splice(i, 1);
+            console.log(typeof player2Boats[i]);
         }
     }
     for(let i = 0; i < player2Boats.length; i++) {
         if(player2Boats[i] == undefined) {
-            player2Boats.splice(i, 1);
+            
         }
     }
 }
