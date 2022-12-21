@@ -177,19 +177,20 @@ function askForSize(boxX, boxY, player) {
     document.addEventListener("keydown", function(event) {
         switch (event.key) {
             case "Enter":
-                if(sizeInput && directionInput &&(boxX+size <= canvasWidth/boxSize && boxY+size <= canvasHeight/boxSize)){
+                if(sizeInput && directionInput && checkIfSizeFits(size, boxX, boxY, direction)){
                     c.clearRect(300, canvasHeight/2-250, canvasWidth, canvasHeight);
                     document.removeEventListener("keydown", arguments.callee);
                     selected = false;
-                    const boat1 = new Boat(size, boxX, boxY, direction);
+                    const boat = new Boat(size, boxX, boxY, direction);
                     if(player == 1) {
-                        player1Boats.push(boat1);
+                        player1Boats.push(boat);
                         player1BoatsSizes.splice(player1BoatsSizes.findIndex(element => element === size), 1);
                     } else if(player == 2) {
                         player2Boats.push(boat1);
                         player2BoatsSizes.splice(player2BoatsSizes.findIndex(element => element === size), 1);
                     }
                 }
+                playersPicking();
                 break;
             case "Escape":
                 c.clearRect(300, canvasHeight/2-220, canvasWidth, canvasHeight);
@@ -209,6 +210,7 @@ function askForSize(boxX, boxY, player) {
             case "3":
             case "4":
             case "5":
+                console.log(player1Boats)
                 if(!sizeInput && checkIfCanUseSize(parseInt(event.key), player)) {
                     size = parseInt(event.key);
                     sizeInput = true;
@@ -224,7 +226,6 @@ function checkIfCanUseSize(size, player){
         if(found === -1){
             return false;
         } else {
-            player1BoatsSizes.splice(found, 1);
             return true;
         }
     } else if(player == 2){
@@ -232,22 +233,36 @@ function checkIfCanUseSize(size, player){
         if(found === -1){
             return false;
         } else {
-            player2BoatsSizes.splice(found, 1);
             return true;
+        }
+    }
+}
+
+function checkIfSizeFits(size, x, y, direction){
+    if(direction == "h"){
+        if(x+size <= canvasWidth/boxSize){
+            return true;
+        } else {
+            return false;
+        }
+    } else if(direction == "v"){
+        if(y+size <= canvasHeight/boxSize){
+            return true;
+        } else {
+            return false;
         }
     }
 }
 
 function playersPicking() {
     c.font = "20px serif";
-    if(player1Boats.length <= 5){
+    if(player1Boats.length < 5){
         c.fillText("Player 1, Pick a Boat", 300, canvasHeight/2-225);
         document.addEventListener("click", function(event) {
             if(event.button == 0 && !selected && Math.floor(event.clientY/boxSize) >= 10) {
                 if(Math.floor(event.clientX/boxSize) < canvasWidth/boxSize && Math.floor(event.clientY/boxSize) < canvasHeight/boxSize) {
                     askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize), 1);
                     document.removeEventListener("click", arguments.callee);
-                    playersPicking();
                     c.strokeStyle = "yellow";
                     c.strokeRect(Math.floor(event.clientX/boxSize)*boxSize, Math.floor(event.clientY/boxSize)*boxSize, boxSize, boxSize);
                 }
@@ -260,7 +275,6 @@ function playersPicking() {
                 if(Math.floor(event.clientX/boxSize) < canvasWidth/boxSize && Math.floor(event.clientY/boxSize) < canvasHeight/boxSize) {
                     askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize), 2);
                     document.removeEventListener("click", arguments.callee);
-                    playersPicking();
                     c.strokeStyle = "yellow";
                     c.strokeRect(Math.floor(event.clientX/boxSize)*boxSize, Math.floor(event.clientY/boxSize)*boxSize, boxSize, boxSize);
                 }
