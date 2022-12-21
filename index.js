@@ -12,6 +12,7 @@ const player2Boats = [];
 let selected = false;
 const player1BoatsSizes = [5, 4, 3, 3, 2];
 const player2BoatsSizes = [5, 4, 3, 3, 2];
+const mapLa
 
 
 class Boat{
