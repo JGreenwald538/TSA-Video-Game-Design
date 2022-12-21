@@ -64,9 +64,7 @@ function renderBackground() {
         player1Boats[i].draw();
     }
     for(let i = 0; i < player2Boats.length; i++) {
-        if(!player2Boats[i] === undefined) {
-            player2Boats[i].draw();
-        }
+        player2Boats[i].draw();
     }
 }
 
@@ -186,7 +184,7 @@ function askForSize(boxX, boxY, player) {
                         player1Boats.push(boat);
                         player1BoatsSizes.splice(player1BoatsSizes.findIndex(element => element === size), 1);
                     } else if(player == 2) {
-                        player2Boats.push(boat1);
+                        player2Boats.push(boat);
                         player2BoatsSizes.splice(player2BoatsSizes.findIndex(element => element === size), 1);
                     }
                 }
@@ -210,7 +208,7 @@ function askForSize(boxX, boxY, player) {
             case "3":
             case "4":
             case "5":
-                console.log(player1Boats)
+                console.log(player2Boats)
                 if(!sizeInput && checkIfCanUseSize(parseInt(event.key), player)) {
                     size = parseInt(event.key);
                     sizeInput = true;
