@@ -222,7 +222,6 @@ function askForSize(boxX, boxY, player) {
             case "3":
             case "4":
             case "5":
-                console.log(player2Boats)
                 if(!sizeInput && checkIfCanUseSize(parseInt(event.key), player)) {
                     size = parseInt(event.key);
                     sizeInput = true;
@@ -288,9 +287,7 @@ function playersPicking() {
     if(player1Boats.length < 5){
         c.fillText("Player 1, Pick a Boat", 300, canvasHeight/2-225);
         document.addEventListener("click", function(event) {
-            console.log(selected);
             if(event.button == 0 && !selected && Math.floor(event.clientY/boxSize) >= 9) {
-                console.log("test");
                 if(Math.floor(event.clientX/boxSize) < canvasWidth/boxSize && Math.floor(event.clientY/boxSize) < canvasHeight/boxSize) {
                     askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize), 1);
                     document.removeEventListener("click", arguments.callee);
