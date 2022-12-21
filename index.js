@@ -182,10 +182,10 @@ function askForSize(boxX, boxY, player) {
                     const boat = new Boat(size, boxX, boxY, direction);
                     if(player == 1) {
                         player1Boats.push(boat);
-                        player1BoatsSizes.splice(player1BoatsSizes.findIndex(element => element === size), 1);
+                        player1BoatsSizes.splice(player1BoatsSizes.indexOf(size), 1);
                     } else if(player == 2) {
                         player2Boats.push(boat);
-                        player2BoatsSizes.splice(player2BoatsSizes.findIndex(element => element === size), 1);
+                        player2BoatsSizes.splice(player2BoatsSizes.indexOf(size), 1);
                     }
                 }
                 playersPicking();
@@ -259,7 +259,7 @@ function playersPicking() {
         c.fillText("Player 1, Pick a Boat", 300, canvasHeight/2-225);
         document.addEventListener("click", function(event) {
             console.log(selected);
-            if(event.button == 0 && !selected && Math.floor(event.clientY/boxSize) >= 8) {
+            if(event.button == 0 && !selected && Math.floor(event.clientY/boxSize) >= 9) {
                 console.log("test");
                 if(Math.floor(event.clientX/boxSize) < canvasWidth/boxSize && Math.floor(event.clientY/boxSize) < canvasHeight/boxSize) {
                     askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize), 1);
@@ -272,7 +272,7 @@ function playersPicking() {
     } else if(player2Boats.length < 5) {
         c.fillText("Player 2, Pick a Boat", 300, canvasHeight/2-225);
         document.addEventListener("click", function(event) {
-            if(event.button == 0 && !selected && Math.floor(event.clientY/boxSize) < 8) {
+            if(event.button == 0 && !selected && Math.floor(event.clientY/boxSize) <= 7) {
                 if(Math.floor(event.clientX/boxSize) < canvasWidth/boxSize && Math.floor(event.clientY/boxSize) < canvasHeight/boxSize) {
                     askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize), 2);
                     document.removeEventListener("click", arguments.callee);
