@@ -195,6 +195,7 @@ function askForSize(boxX, boxY, player) {
                 document.removeEventListener("keydown", arguments.callee);
                 selected = false;
                 renderBackground();
+                playersPicking();
                 return;
             case "h":
             case "v":
@@ -227,7 +228,7 @@ function checkIfCanUseSize(size, player){
             return true;
         }
     } else if(player == 2){
-        found = player2BoatsSizes.find(element => element === size);
+        found = player2BoatsSizes.findIndex(element => element === size);
         if(found === -1){
             return false;
         } else {
@@ -257,7 +258,9 @@ function playersPicking() {
     if(player1Boats.length < 5){
         c.fillText("Player 1, Pick a Boat", 300, canvasHeight/2-225);
         document.addEventListener("click", function(event) {
-            if(event.button == 0 && !selected && Math.floor(event.clientY/boxSize) >= 10) {
+            console.log(selected);
+            if(event.button == 0 && !selected && Math.floor(event.clientY/boxSize) >= 8) {
+                console.log("test");
                 if(Math.floor(event.clientX/boxSize) < canvasWidth/boxSize && Math.floor(event.clientY/boxSize) < canvasHeight/boxSize) {
                     askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize), 1);
                     document.removeEventListener("click", arguments.callee);
@@ -266,7 +269,7 @@ function playersPicking() {
                 }
             }   
         });
-    } else {
+    } else if(player2Boats.length < 5) {
         c.fillText("Player 2, Pick a Boat", 300, canvasHeight/2-225);
         document.addEventListener("click", function(event) {
             if(event.button == 0 && !selected && Math.floor(event.clientY/boxSize) < 8) {
