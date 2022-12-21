@@ -62,9 +62,7 @@ function renderBackground() {
     c.fillRect(canvasWidth/2-boxSize, canvasHeight-boxSize, boxSize*2, boxSize);
     c.fillRect(canvasWidth/2-boxSize, 0, boxSize*2, boxSize);
     for(let i = 0; i < player1Boats.length; i++) {
-        if(!player1Boats[i] === undefined) {
-            player1Boats[i].draw();
-        }
+        player1Boats[i].draw();
     }
     for(let i = 0; i < player2Boats.length; i++) {
         if(!player2Boats[i] === undefined) {
@@ -181,18 +179,21 @@ function askForSize(boxX, boxY) {
         switch (event.key) {
             case "Enter":
                 if(sizeInput && directionInput &&(boxX+size <= canvasWidth/boxSize && boxY+size <= canvasHeight/boxSize)) {
-                    c.clearRect(300, canvasHeight/2-220, canvasWidth, canvasHeight);
+                    c.clearRect(300, canvasHeight/2-250, canvasWidth, canvasHeight);
                     document.removeEventListener("keydown", arguments.callee);
                     selected = false;
                     console.log(player1Boats);
-                    return(new Boat(size, boxX, boxY, direction));
+                    const boat1 = new Boat(size, boxX, boxY, direction);
+                    player1Boats.push(boat1);
+                    console.log(player1Boats);
+                    // return(new Boat(size, boxX, boxY, direction));
+                    break;
                 }
                 break;
             case "Escape":
                 c.clearRect(300, canvasHeight/2-220, canvasWidth, canvasHeight);
                 document.removeEventListener("keydown", arguments.callee);
                 selected = false;
-                renderBackground();
                 console.log(player1Boats);
                 removeUndefineds();
                 
@@ -221,12 +222,12 @@ function askForSize(boxX, boxY) {
 function removeUndefineds(){
     for(let i = 0; i < player1Boats.length; i++) {
         if(player1Boats[i] == undefined) {
-            console.log(typeof player2Boats[i]);
+            player1Boats.splice(i, 1);
         }
     }
     for(let i = 0; i < player2Boats.length; i++) {
         if(player2Boats[i] == undefined) {
-            
+            player2Boats.splice(i, 1);
         }
     }
 }
