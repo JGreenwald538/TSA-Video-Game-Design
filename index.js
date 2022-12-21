@@ -66,7 +66,9 @@ function renderBackground() {
         }
     }
     for(let i = 0; i < player2Boats.length; i++) {
-        player2Boats[i].draw();
+        if(!player2Boats[i] == undefined) {
+            player2Boats[i].draw();
+        }
     }
 }
 
@@ -187,7 +189,10 @@ function askForSize(boxX, boxY) {
             case "Escape":
                 c.clearRect(300, canvasHeight/2-220, canvasWidth, canvasHeight);
                 document.removeEventListener("keydown", arguments.callee);
-                return(askForSize(boxX, boxY));
+                selected = false;
+                renderBackground();
+                removeUndefineds();
+                return;
             case "h":
             case "v":
                 if(!directionInput) {
@@ -207,6 +212,19 @@ function askForSize(boxX, boxY) {
                 }
         }
     });
+}
+
+function removeUndefineds(){
+    for(let i = 0; i < player1Boats.length; i++) {
+        if(player1Boats[i] == undefined) {
+            player1Boats.splice(i, 1);
+        }
+    }
+    for(let i = 0; i < player2Boats.length; i++) {
+        if(player2Boats[i] == undefined) {
+            player2Boats.splice(i, 1);
+        }
+    }
 }
 
 function playersPicking() {
