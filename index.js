@@ -177,15 +177,17 @@ function askForSize(boxX, boxY, player) {
     document.addEventListener("keydown", function(event) {
         switch (event.key) {
             case "Enter":
-                if(sizeInput && directionInput &&(boxX+size <= canvasWidth/boxSize && boxY+size <= canvasHeight/boxSize) && checkIfCanUseSize(size, player)){
+                if(sizeInput && directionInput &&(boxX+size <= canvasWidth/boxSize && boxY+size <= canvasHeight/boxSize)){
                     c.clearRect(300, canvasHeight/2-250, canvasWidth, canvasHeight);
                     document.removeEventListener("keydown", arguments.callee);
                     selected = false;
                     const boat1 = new Boat(size, boxX, boxY, direction);
                     if(player == 1) {
                         player1Boats.push(boat1);
+                        player1BoatsSizes.splice(player1BoatsSizes.findIndex(element => element === size), 1);
                     } else if(player == 2) {
                         player2Boats.push(boat1);
+                        player2BoatsSizes.splice(player2BoatsSizes.findIndex(element => element === size), 1);
                     }
                 }
                 break;
@@ -207,7 +209,7 @@ function askForSize(boxX, boxY, player) {
             case "3":
             case "4":
             case "5":
-                if(!sizeInput) {
+                if(!sizeInput && checkIfCanUseSize(parseInt(event.key), player)) {
                     size = parseInt(event.key);
                     sizeInput = true;
                     c.fillText("Size: " + size, 300, canvasHeight/2-100);
@@ -217,18 +219,17 @@ function askForSize(boxX, boxY, player) {
 }
 
 function checkIfCanUseSize(size, player){
-    console.log(player1BoatsSizes);
     if(player == 1){
-        found = player1BoatsSizes.find(element => element == size);
-        if(found === undefined){
+        found = player1BoatsSizes.findIndex(element => element === size);
+        if(found === -1){
             return false;
         } else {
             player1BoatsSizes.splice(found, 1);
             return true;
         }
     } else if(player == 2){
-        found = player2BoatsSizes.find(element => element == size);
-        if(found === undefined){
+        found = player2BoatsSizes.find(element => element === size);
+        if(found === -1){
             return false;
         } else {
             player2BoatsSizes.splice(found, 1);
@@ -242,7 +243,7 @@ function playersPicking() {
     if(player1Boats.length <= 5){
         c.fillText("Player 1, Pick a Boat", 300, canvasHeight/2-225);
         document.addEventListener("click", function(event) {
-            if(event.button == 0 && !selected) {
+            if(event.button == 0 && !selected && Math.floor(event.clientY/boxSize) >= 10) {
                 if(Math.floor(event.clientX/boxSize) < canvasWidth/boxSize && Math.floor(event.clientY/boxSize) < canvasHeight/boxSize) {
                     askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize), 1);
                     document.removeEventListener("click", arguments.callee);
@@ -255,7 +256,7 @@ function playersPicking() {
     } else {
         c.fillText("Player 2, Pick a Boat", 300, canvasHeight/2-225);
         document.addEventListener("click", function(event) {
-            if(event.button == 0 && !selected) {
+            if(event.button == 0 && !selected && Math.floor(event.clientY/boxSize) < 8) {
                 if(Math.floor(event.clientX/boxSize) < canvasWidth/boxSize && Math.floor(event.clientY/boxSize) < canvasHeight/boxSize) {
                     askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize), 2);
                     document.removeEventListener("click", arguments.callee);
