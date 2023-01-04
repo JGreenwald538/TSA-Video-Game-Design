@@ -178,7 +178,7 @@ function askForSize(boxX, boxY, player) {
     let sizeInput = false;
     let directionInput = false;
     selected = true;
-    document.addEventListener("keydown", function(event) {
+    document.addEventListener("keydown", function boatInput(event) {
         switch (event.key) {
             case "Enter":
                 if(sizeInput && directionInput && checkIfSizeFits(size, boxX, boxY, direction) && !isAnythingThere(boxX, boxY, size, direction)) {
@@ -229,11 +229,11 @@ function askForSize(boxX, boxY, player) {
                 }
         }
     });
-    document.addEventListener("click", function(event) {
+    document.addEventListener("click", function remove(event) {
         if(selected && event.button == 0){
             console.log("clicked");
-            document.removeEventListener("click", arguments.callee);
-            document.removeEventListener("keydown", arguments.callee);
+            document.removeEventListener("click", remove);
+            document.removeEventListener("keydown", boatInput);
             playersPicking();
         }
     });
