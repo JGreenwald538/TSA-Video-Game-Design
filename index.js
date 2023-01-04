@@ -229,6 +229,14 @@ function askForSize(boxX, boxY, player) {
                 }
         }
     });
+    document.addEventListener("click", function(event) {
+        if(selected && event.button == 0){
+            console.log("clicked");
+            document.removeEventListener("click", arguments.callee);
+            document.removeEventListener("keydown", arguments.callee);
+            playersPicking();
+        }
+    });
 }
 
 function checkIfCanUseSize(size, player){
@@ -289,8 +297,8 @@ function playersPicking() {
         document.addEventListener("click", function(event) {
             if(event.button == 0 && !selected && Math.floor(event.clientY/boxSize) >= 9) {
                 if(Math.floor(event.clientX/boxSize) < canvasWidth/boxSize && Math.floor(event.clientY/boxSize) < canvasHeight/boxSize) {
-                    askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize), 1);
                     document.removeEventListener("click", arguments.callee);
+                    askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize), 1);
                     c.strokeStyle = "yellow";
                     c.strokeRect(Math.floor(event.clientX/boxSize)*boxSize, Math.floor(event.clientY/boxSize)*boxSize, boxSize, boxSize);
                 }
@@ -301,8 +309,8 @@ function playersPicking() {
         document.addEventListener("click", function(event) {
             if(event.button == 0 && !selected && Math.floor(event.clientY/boxSize) <= 7) {
                 if(Math.floor(event.clientX/boxSize) < canvasWidth/boxSize && Math.floor(event.clientY/boxSize) < canvasHeight/boxSize) {
-                    askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize), 2);
                     document.removeEventListener("click", arguments.callee);
+                    askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize), 2);
                     c.strokeStyle = "yellow";
                     c.strokeRect(Math.floor(event.clientX/boxSize)*boxSize, Math.floor(event.clientY/boxSize)*boxSize, boxSize, boxSize);
                 }
