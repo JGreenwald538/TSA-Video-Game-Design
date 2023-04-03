@@ -22,6 +22,8 @@ let turn = 1;
 let globalText = "";
 let globalX = 0;
 let globalY = 0;
+let fps = 1000/60;
+let angle = 0;
 
 
 class Boat{
@@ -97,7 +99,11 @@ function loadShooter(){
             c.drawImage(shooterImage,canvasWidth/2-shooterImage.width/2, 0);
         }
     },false);
-    shooterImage.src = "Assets/Background/thumbnail_pixel.shooter.tsa.png"
+    shooterImage.src = "Assets/Background/thumbnail_pixel.shooter.tsa" + angle + ".png";
+    angle += 1;
+    if(angle > 30){
+        angle = -30;
+    }
 }
 
 
@@ -382,5 +388,6 @@ document.addEventListener("keydown", function(event) {
 
 
 setInterval(updateProjectiles, 100);
-setInterval(renderBackground, 1);
+setInterval(renderBackground, fps);
+// setInterval(loadShooter, fps);
 game();
