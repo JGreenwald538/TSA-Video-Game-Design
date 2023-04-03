@@ -10,19 +10,22 @@ let didPlayersPick = false;
 const player1Boats = [];
 const player2Boats = [];
 let selected = false;
-const player1BoatsSizes = [5, 4, 3, 3, 2];
-const player2BoatsSizes = [5, 4, 3, 3, 2];
+const player1BoatsSizes = [2, 3, 3, 4, 5];
+const player2BoatsSizes = [2, 3, 3, 4, 5];
 const mapLayout = [];
 mapLayout[0] = [0, 0, 0, 0, 1, 1, 0, 0, 0, 0];
 for (let i = 1; i <= 15; i++) {
     mapLayout[i] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
 }
 mapLayout[16] = [0, 0, 0, 0, 1, 1, 0, 0, 0, 0];
+let turn = 1;
+let globalText = "";
+let globalX = 0;
+let globalY = 0;
 
 
 class Boat{
     constructor(size, boxX, boxY, direction) {
-        renderBackground();
         this.size = size;
         this.boxX = boxX;
         this.boxY = boxY;
@@ -35,15 +38,15 @@ class Boat{
         var boxX = this.boxX;
         var boxY = this.boxY;
         c.fillStyle = "rgb(155, 103, 60)";
-        if(direction.toLowerCase() == "h") {
-            for(let i = 0; i < size; i++) {
-                c.fillRect(boxX*boxSize+(boxSize*i), boxY*boxSize, boxSize, boxSize);
+        const boatImage = new Image();
+        boatImage.addEventListener("load",() => {
+            if(direction == "h") {
+                c.drawImage(boatImage,boxX*boxSize, boxY*boxSize, boxSize*size, boxSize);
+            } else {
+                c.drawImage(boatImage,boxX*boxSize, boxY*boxSize, boxSize, boxSize*size);
             }
-        } else if(direction.toLowerCase() == "v") {
-            for(let i = 0; i < size; i++) {
-                c.fillRect(boxX*boxSize, boxY*boxSize+(boxSize*i), boxSize, boxSize);
-            }
-        }
+        },false);
+        boatImage.src = "Assets/Ships/TSA.pixel." + size + direction + ".png";
     }
 }
 
@@ -53,25 +56,79 @@ function dToR(degrees) {
     return degrees * (pi/180);
 }
 
+function drawBoat(follow, size, direction, event = null) {
+    const boatImage = new Image();
+    c.clearRect(0, 0, canvas.width, canvas.height);
+    boatImage.addEventListener("load",() => {
+        if(!follow) {
+            if(direction == "h") {
+                c.drawImage(boatImage,canvasWidth, 100, boxSize*size, boxSize);
+            } else {
+                c.drawImage(boatImage,canvasWidth, 100+boxSize, boxSize, boxSize*size);
+            }
+        } else {
+            
+            const mousePos = getMousePos(canvas, event);
+            if(direction == "h") {
+                c.drawImage(boatImage, mousePos.x - boxSize*size/2, mousePos.y - boxSize/2, boxSize*size, boxSize);
+            } else {
+                c.drawImage(boatImage, mousePos.x - boxSize/2, mousePos.y - boxSize*size/2, boxSize, boxSize*size);
+            }
+        }
+    },false);
+
+    boatImage.src = "Assets/Ships/TSA.pixel." + size + direction + ".png";
+}
+
+function getMousePos(canvas, evt) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top
+    };
+}
+
+function loadShooter(){
+    const shooterImage = new Image();
+    shooterImage.addEventListener("load",() => {
+        if(turn == 1) {
+            c.drawImage(shooterImage,canvasWidth/2-shooterImage.width/2, canvasHeight-shooterImage.height);
+        } else {
+            c.drawImage(shooterImage,canvasWidth/2-shooterImage.width/2, 0);
+        }
+    },false);
+    shooterImage.src = "Assets/Background/thumbnail_pixel.shooter.tsa.png"
+}
+
+
+function drawText(text="", x=0, y=0){
+    globalText = text;
+    globalX = x;
+    globalY = y;
+}
 
 function renderBackground() {
-    c.fillStyle = "blue";
-    c.fillRect(0, 0, canvasWidth, canvasHeight);
-    c.strokeStyle = "black";
-    for(let x = 0; x < canvasWidth/boxSize; x++) {
-        for(let y = 0; y < canvasHeight/boxSize; y++) {
-            c.strokeRect(boxSize*x, boxSize*y, boxSize, boxSize);
+    const backgroundImage = new Image();
+    backgroundImage.addEventListener("load",() => {
+        c.drawImage(backgroundImage,0,0, canvasWidth, canvasHeight);
+        c.globalAlpha = 0.3;
+        c.strokeStyle = "black";
+        for(let x = 0; x < canvasWidth/boxSize; x++) {
+            for(let y = 0; y < canvasHeight/boxSize; y++) {
+                c.strokeRect(boxSize*x, boxSize*y, boxSize, boxSize);
+            }
         }
-    }
-    c.fillStyle = "gray";
-    c.fillRect(canvasWidth/2-boxSize, canvasHeight-boxSize, boxSize*2, boxSize);
-    c.fillRect(canvasWidth/2-boxSize, 0, boxSize*2, boxSize);
-    for(let i = 0; i < player1Boats.length; i++) {
-        player1Boats[i].draw();
-    }
-    for(let i = 0; i < player2Boats.length; i++) {
-        player2Boats[i].draw();
-    }
+        c.globalAlpha = 1;
+        for(let boat of player1Boats) {
+            boat.draw();
+        }
+        for(let boat of player2Boats) {
+            boat.draw();
+        }
+        c.fillStyle = "black";
+        c.fillText(globalText, globalX, globalY);
+    },false);     
+    backgroundImage.src = "Assets/Background/pixil-frame-0.png";   
 }
 
 class Projectile{
@@ -110,7 +167,6 @@ class Projectile{
             } else if(-5 >= this.x || this.x >= canvasWidth-5 || -5 > this.y || this.y > canvasHeight-5) {
                 this.remove();
             } else {
-                renderBackground();
                 c.fillStyle = "red";
                 c.fillRect(this.x, this.y, 5, 5);
             }
@@ -118,7 +174,6 @@ class Projectile{
     }
     remove() {
         this.visible = false;
-        renderBackground();
     }
     writeWindSpeed() {
         c.font = "48px serif";
@@ -164,98 +219,87 @@ function updateProjectiles() {
     }
 }
 
-function askForSize(boxX, boxY, player) {
-    c.font = "20px serif";
-    c.fillText("Type the number for the", 300, canvasHeight/2-200);
-    c.fillText("Size of the boat(2-5)", 300, canvasHeight/2-175);
-    c.fillText("Press enter to submit", 300, canvasHeight/2-150);
-    c.fillText("Press escape to reset", 300, canvasHeight/2-125);
-    c.fillText("Size: ", 300, canvasHeight/2-100);
-    c.fillText("Direction: ", 300, canvasHeight/2-75);
-
-    let size = 0;
-    let direction = "h";
-    let sizeInput = false;
-    let directionInput = false;
-    selected = true;
-    document.addEventListener("keydown", function boatInput(event) {
-        switch (event.key) {
-            case "Enter":
-                if(sizeInput && directionInput && checkIfSizeFits(size, boxX, boxY, direction) && !isAnythingThere(boxX, boxY, size, direction)) {
-                    c.clearRect(300, canvasHeight/2-250, canvasWidth, canvasHeight);
-                    document.removeEventListener("keydown", arguments.callee);
-                    selected = false;
-                    const boat = new Boat(size, boxX, boxY, direction);
-                    if(player == 1) {
-                        player1Boats.push(boat);
-                        player1BoatsSizes.splice(player1BoatsSizes.indexOf(size), 1);
-                    } else if(player == 2) {
-                        player2Boats.push(boat);
-                        player2BoatsSizes.splice(player2BoatsSizes.indexOf(size), 1);
-                    }
-                    for (let i = 0; i < size; i++) {
-                        if(direction == "h") {
-                            mapLayout[boxY][boxX+i] = 1;
-                        } else if(direction == "v") {
-                            mapLayout[boxY+i][boxX] = 1;
-                        }
-                    }
-                }
-                playersPicking();
-                break;
-            case "Escape":
-                c.clearRect(300, canvasHeight/2-250, canvasWidth, canvasHeight);
-                document.removeEventListener("keydown", arguments.callee);
-                selected = false;
-                renderBackground();
-                playersPicking();
-                return;
-            case "h":
-            case "v":
-                if(!directionInput) {
-                    direction = event.key;
-                    directionInput = true;
-                    c.fillText("Direction: " + direction, 300, canvasHeight/2-75);
-                }
-                break;
-            case "2":
-            case "3":
-            case "4":
-            case "5":
-                if(!sizeInput && checkIfCanUseSize(parseInt(event.key), player)) {
-                    size = parseInt(event.key);
-                    sizeInput = true;
-                    c.fillText("Size: " + size, 300, canvasHeight/2-100);
-                }
-        }
-    });
-    document.addEventListener("click", function remove(event) {
-        if(selected && event.button == 0){
-            console.log("clicked");
-            document.removeEventListener("click", remove);
-            document.removeEventListener("keydown", boatInput);
-            playersPicking();
-        }
-    });
-}
-
-function checkIfCanUseSize(size, player){
-    if(player == 1){
-        found = player1BoatsSizes.findIndex(element => element === size);
-        if(found === -1){
-            return false;
-        } else {
-            return true;
-        }
-    } else if(player == 2){
-        found = player2BoatsSizes.findIndex(element => element === size);
-        if(found === -1){
-            return false;
-        } else {
-            return true;
-        }
+function size(player) {
+    if(player == 1) {
+        return player1BoatsSizes[player1Boats.length];
+    } else if(player == 2) {
+        return player2BoatsSizes[player2Boats.length];
     }
 }
+
+function placeBoats(player) {
+    const boatSize = size(player);
+    console.log(player);
+    for(let i = 0; i < 2; i++) {
+        if(i == 0) {
+            drawBoat(false, boatSize, "h");
+        } else if(i == 1) {
+            drawBoat(false, boatSize, "v");
+        }
+    }
+    if(!selected) {
+        document.addEventListener("mousedown", function boatInput(event) {
+            drawText();
+            c.clearRect(0, 0, canvasWidth, canvasHeight);
+            if(event.clientX > canvasWidth && event.clientX < canvasWidth+boatSize*boxSize && event.clientY > 100 && event.clientY < 100+boxSize) {
+                var direction = "h";
+                document.removeEventListener("mousedown", arguments.callee);
+                selected = true;
+            } else if(event.clientX > canvasWidth && event.clientX < canvasWidth+boxSize && event.clientY > 100+boxSize && event.clientY < 100+boatSize*boxSize) {
+                var direction = "v";
+                document.removeEventListener("mousedown", arguments.callee);
+                selected = true;
+            }
+            if(selected) {
+                document.addEventListener("mousedown", function boatInput(event) {
+                    const boatSize = size(player);
+                    if(direction == "h") {
+                        boxX = Math.floor(event.clientX/boxSize) - Math.round(boatSize/2);
+                        boxY = Math.floor(event.clientY/boxSize);
+                    } else if(direction == "v") {
+                        boxX = Math.floor(event.clientX/boxSize);
+                        boxY = Math.floor(event.clientY/boxSize) - Math.round(boatSize/2);
+                    }
+                    if(checkIfSizeFits(boatSize, boxX, boxY, direction) && !isAnythingThere(boxX, boxY, boatSize, direction) && inPlayerArea(player, boxY) && boxX >= 0) {
+                        c.clearRect(300, canvasHeight/2-250, canvasWidth, canvasHeight);
+                        document.removeEventListener("mousedown", arguments.callee);
+                        selected = false;
+                        const boat = new Boat(boatSize, boxX, boxY, direction);
+                        if(player == 1) {
+                            player1Boats.push(boat);
+                        } else{
+                            player2Boats.push(boat);
+                        }
+                        for (let i = 0; i < boatSize; i++) {
+                            if(direction == "h") {
+                                mapLayout[boxY][boxX+i] = 1;
+                            } else if(direction == "v") {
+                                mapLayout[boxY+i][boxX] = 1;
+                            }
+                        }
+                        document.removeEventListener("mousemove", arguments.callee);
+                        game();
+                    }
+                    
+                });
+            
+                document.addEventListener("mousemove", function func(event) {
+                    if(!selected){
+                        document.removeEventListener("mousemove", arguments.callee);
+                    } else {
+                        drawBoat(true, boatSize, direction, event);
+                    }
+            });
+        } else {
+            selected = false;
+        }
+        
+        });
+    }
+
+
+}
+
 
 function checkIfSizeFits(size, x, y, direction){
     if(direction == "h"){
@@ -272,6 +316,7 @@ function checkIfSizeFits(size, x, y, direction){
         }
     }
 }
+
 
 function isAnythingThere(x, y, size, direction){
     if(direction == "h"){
@@ -290,34 +335,42 @@ function isAnythingThere(x, y, size, direction){
     return false;
 }
 
-function playersPicking() {
-    c.font = "20px serif";
-    if(player1Boats.length < 5){
-        c.fillText("Player 1, Pick a Boat", 300, canvasHeight/2-225);
-        document.addEventListener("click", function(event) {
-            if(event.button == 0 && !selected && Math.floor(event.clientY/boxSize) >= 9) {
-                if(Math.floor(event.clientX/boxSize) < canvasWidth/boxSize && Math.floor(event.clientY/boxSize) < canvasHeight/boxSize) {
-                    document.removeEventListener("click", arguments.callee);
-                    askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize), 1);
-                    c.strokeStyle = "yellow";
-                    c.strokeRect(Math.floor(event.clientX/boxSize)*boxSize, Math.floor(event.clientY/boxSize)*boxSize, boxSize, boxSize);
-                }
-            }   
-        });
-    } else if(player2Boats.length < 5) {
-        c.fillText("Player 2, Pick a Boat", 300, canvasHeight/2-225);
-        document.addEventListener("click", function(event) {
-            if(event.button == 0 && !selected && Math.floor(event.clientY/boxSize) <= 7) {
-                if(Math.floor(event.clientX/boxSize) < canvasWidth/boxSize && Math.floor(event.clientY/boxSize) < canvasHeight/boxSize) {
-                    document.removeEventListener("click", arguments.callee);
-                    askForSize(Math.floor(event.clientX/boxSize), Math.floor(event.clientY/boxSize), 2);
-                    c.strokeStyle = "yellow";
-                    c.strokeRect(Math.floor(event.clientX/boxSize)*boxSize, Math.floor(event.clientY/boxSize)*boxSize, boxSize, boxSize);
-                }
-            }   
-        });
+function inPlayerArea(player, boxY){
+    if(player == 2){
+        if(boxY >= 0 && boxY < 7){
+            return true;
+        } else {
+            return false;
+        }
+    } else if(player == 1){
+        if(boxY > 8 && boxY <= 15){
+            return true;
+        } else {
+            return false;
+        }
     }
 }
+
+function game() {
+    c.font = "20px serif";
+    if(player1Boats.length < 5){
+        drawText("Player 1, Place a Boat", canvasWidth/2-c.measureText("Player 1, Place a Boat").width/2, 140);
+        placeBoats(1);
+    } else if(player2Boats.length < 5) {
+        document.removeEventListener("mousedown", arguments.callee);
+        document.removeEventListener("mousemove", arguments.callee);
+        drawText("Player 2, Place a Boat", canvasWidth/2-c.measureText("Player 2, Place a Boat").width/2, canvasHeight-140);
+        placeBoats(2);  
+    } else{
+        loadShooter();
+        c.fillText("Player 1, Shoot", canvasWidth/2, 25);
+        document.addEventListener("click", function(event) {
+            console.log("clicked");   
+        });
+    }
+
+}
+
 
 
 
@@ -328,6 +381,6 @@ document.addEventListener("keydown", function(event) {
 });
 
 
-renderBackground();
 setInterval(updateProjectiles, 100);
-playersPicking();
+setInterval(renderBackground, 1);
+game();
