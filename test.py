@@ -7,9 +7,9 @@ img = Image.open("Assets/Background/thumbnail_pixel.shooter.tsa.png")
 rotated_imgs = []
 
 # Rotate the image 60 times
-for i in range(0, -30, -1):
+for i in range(-30):
     rotated_img = img.copy()
-    rotated_img = rotated_img.rotate(i, expand=True)
+    rotated_img = rotated_img.rotate(i, expand=True, center=(180, 150))
     rotated_imgs.append(rotated_img)
 
 # Save the rotated images
